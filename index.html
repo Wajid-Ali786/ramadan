@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ramadan Quran Tracker Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Amiri:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0F5132;
+            --primary-dark: #082f1d;
+            --primary-light: #d1e7dd;
+            --accent: #D4AF37;
+            --bg: #F0F2F5;
+            --card-bg: #FFFFFF;
+            --text: #212529;
+            --text-muted: #6C757D;
+            --radius: 16px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            padding-bottom: 80px;
+            overscroll-behavior-y: none; /* Prevent pull-to-refresh on mobile */
+        }
+
+        /* --- Header --- */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, #198754 100%);
+            color: white;
+            padding: 30px 20px 70px 20px;
+            text-align: center;
+            border-bottom-left-radius: 35px;
+            border-bottom-right-radius: 35px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(15, 81, 50, 0.2);
+        }
+
+        /* Decorative Background Pattern */
+        header::before {
+            content: "۞";
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            font-family: 'Amiri', serif;
+            font-size: 15rem;
+            opacity: 0.05;
+            color: white;
+            pointer-events: none;
+        }
+
+        h1 { font-weight: 600; font-size: 1.6rem; margin-bottom: 5px; }
+        .subtitle { font-size: 0.85rem; opacity: 0.9; font-weight: 300; }
+
+        /* --- Dashboard Stats --- */
+        .dashboard-container {
+            margin-top: -50px;
+            padding: 0 15px;
+            margin-bottom: 25px;
+        }
+
+        .dashboard-card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+
+        .stats-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding: 0 5px;
+        }
+
+        .stat-box h2 { font-size: 1.8rem; color: var(--primary); margin-bottom: 0; line-height: 1; }
+        .stat-box span { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 500; }
+
+        .progress-wrapper {
+            position: relative;
+            height: 12px;
+            background: #E9ECEF;
+            border-radius: 50px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), #f3c623);
+            width: 0%;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 50px;
+        }
+
+        /* --- Grid & Cards --- */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 15px;
+            display: grid;
+            grid-template-columns: 1fr; /* Default mobile single column */
+            gap: 12px;
+        }
+
+        @media (min-width: 600px) {
+            .container {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+        }
+
+        .para-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+            border: 1px solid rgba(0,0,0,0.04);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            touch-action: manipulation;
+        }
+
+        .para-card:active { background-color: #f8f9fa; }
+
+        .para-card.completed {
+            background: #f0fff4;
+            border-color: #c3e6cb;
+        }
+        
+        .para-card.completed .para-icon {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .para-info { display: flex; align-items: center; gap: 12px; flex: 1; }
+        
+        .para-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            flex-shrink: 0;
+            transition: 0.3s;
+        }
+
+        .para-text h3 { font-size: 0.95rem; margin-bottom: 2px; color: var(--primary); }
+        .para-text p { font-size: 1.1rem; color: var(--accent); font-family: 'Amiri', serif; margin: 0; line-height: 1; }
+
+        .para-progress-mini {
+            text-align: right;
+            min-width: 55px;
+        }
+        .mini-stat { font-size: 0.75rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 4px; }
+        .mini-bar {
+            width: 55px;
+            height: 5px;
+            background: #eee;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-left: auto;
+        }
+        .mini-fill { height: 100%; background: var(--primary); width: 0%; transition: width 0.3s; }
+
+        /* --- Modal (Ruku Selection) --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(3px);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.3s;
+            display: flex;
+            align-items: flex-end; /* Bottom sheet default */
+        }
+
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+
+        .modal-content {
+            background: white;
+            width: 100%;
+            max-width: 500px;
+            border-top-left-radius: 25px;
+            border-top-right-radius: 25px;
+            padding: 20px;
+            transform: translateY(100%);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            margin: 0 auto; /* Center on desktop */
+        }
+
+        @media (min-width: 500px) {
+            .modal-overlay { align-items: center; justify-content: center; }
+            .modal-content { 
+                border-radius: 25px; 
+                transform: translateY(20px) scale(0.95); 
+                height: auto;
+                max-height: 80vh;
+            }
+            .modal-overlay.active .modal-content { transform: translateY(0) scale(1); }
+        }
+
+        .modal-overlay.active .modal-content { transform: translateY(0); }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 15px;
+            flex-shrink: 0;
+        }
+        
+        .drag-handle {
+            width: 40px;
+            height: 5px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            margin: -5px auto 15px auto;
+        }
+
+        .modal-title { font-size: 1.2rem; color: var(--primary); margin-bottom: 2px; }
+        .modal-subtitle { color: var(--accent); font-family: 'Amiri', serif; font-size: 1.1rem; }
+
+        /* Edit Controls */
+        .edit-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin: 10px 0;
+            background: #f8f9fa;
+            padding: 8px;
+            border-radius: 12px;
+        }
+        
+        .edit-label { font-size: 0.8rem; color: var(--text-muted); }
+        
+        .btn-edit {
+            width: 30px; 
+            height: 30px;
+            border-radius: 50%;
+            border: none;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            color: var(--primary);
+            font-size: 1.2rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        .btn-edit:active { transform: scale(0.9); }
+
+        .ruku-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(45px, 1fr));
+            gap: 10px;
+            overflow-y: auto;
+            padding: 10px 5px 20px 5px;
+            margin-bottom: 10px;
+            flex-grow: 1;
+        }
+
+        .ruku-bubble {
+            aspect-ratio: 1;
+            border-radius: 50%;
+            background: white;
+            border: 2px solid #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .ruku-bubble.checked {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(15, 81, 50, 0.3);
+        }
+
+        .btn-close {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            border: none;
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: auto;
+            flex-shrink: 0;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #333;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            opacity: 0;
+            transition: 0.3s;
+            z-index: 2000;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            white-space: nowrap;
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Quran Tracker</h1>
+        <div class="subtitle">Ramadan 2025 Goal</div>
+    </header>
+
+    <div class="dashboard-container">
+        <div class="dashboard-card">
+            <div class="stats-row">
+                <div class="stat-box">
+                    <h2 id="total-paras-count">0</h2>
+                    <span>Paras Done</span>
+                </div>
+                <div class="stat-box">
+                    <h2 id="total-ruku-count">0</h2>
+                    <span>Rukus Read</span>
+                </div>
+                <div class="stat-box">
+                    <h2 id="percent-count">0%</h2>
+                    <span>Progress</span>
+                </div>
+            </div>
+            <div class="progress-wrapper">
+                <div class="progress-fill" id="main-progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" id="para-list">
+        <!-- List will be generated here -->
+    </div>
+
+    <!-- Modal for Ruku Selection -->
+    <div class="modal-overlay" id="modal" onclick="closeModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="drag-handle"></div>
+            <div class="modal-header">
+                <h2 class="modal-title" id="modal-title">Para 1</h2>
+                <p class="modal-subtitle" id="modal-arabic">الم</p>
+                
+                <div class="edit-controls">
+                    <span class="edit-label">Total Rukus: <strong id="current-ruku-total">16</strong></span>
+                    <div style="display:flex; gap:10px;">
+                        <button class="btn-edit" onclick="adjustRukuCount(-1)">−</button>
+                        <button class="btn-edit" onclick="adjustRukuCount(1)">+</button>
+                    </div>
+                </div>
+                <p style="font-size: 0.75rem; color: var(--text-muted); margin-top:5px;">Tap circles to mark as read</p>
+            </div>
+            
+            <div class="ruku-grid" id="ruku-grid">
+                <!-- Bubbles go here -->
+            </div>
+
+            <button class="btn-close" onclick="closeModalDirect()">Done & Save</button>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">Saved Successfully</div>
+
+<script>
+    // --- Standard Indo-Pak Ruku Counts ---
+    const defaultParaData = [
+        { id: 1, name: "Alif Lam Meem", ar: "الم", rukus: 16 },
+        { id: 2, name: "Sayaqool", ar: "سَيَقُولُ", rukus: 16 },
+        { id: 3, name: "Tilkal Rusull", ar: "تِلْكَ الرُّسُلُ", rukus: 20 },
+        { id: 4, name: "Lan Tanaloo", ar: "لَنْ تَنَالُوا", rukus: 16 },
+        { id: 5, name: "Wal Mohsanat", ar: "وَالْمُحْصَنَاتُ", rukus: 14 },
+        { id: 6, name: "La Yuhibbullah", ar: "لَا يُحِبُّ اللَّهُ", rukus: 20 },
+        { id: 7, name: "Wa Iza Samiu", ar: "وَإِذَا سَمِعُوا", rukus: 16 },
+        { id: 8, name: "Wa Lau Annana", ar: "وَلَوْ أَنَّنَا", rukus: 16 },
+        { id: 9, name: "Qalal Malao", ar: "قَالَ الْمَلَأُ", rukus: 24 },
+        { id: 10, name: "Wa A'lamu", ar: "وَاعْلَمُوا", rukus: 11 },
+        { id: 11, name: "Yatazeroon", ar: "يَعْتَذِرُونَ", rukus: 21 },
+        { id: 12, name: "Wa Mamin Da'abat", ar: "وَمَا مِنْ دَابَّةٍ", rukus: 20 },
+        { id: 13, name: "Wa Ma Ubiroo", ar: "وَمَا أُبَرِّئُ", rukus: 13 },
+        { id: 14, name: "Rubama", ar: "رُبَمَا", rukus: 18 },
+        { id: 15, name: "Subhanallazi", ar: "سُبْحَانَ الَّذِي", rukus: 20 },
+        { id: 16, name: "Qala Alam", ar: "قَالَ أَلَمْ", rukus: 20 },
+        { id: 17, name: "Aqtarabo", ar: "اقْتَرَبَ", rukus: 17 },
+        { id: 18, name: "Qadd Aflaha", ar: "قَدْ أَفْلَحَ", rukus: 14 },
+        { id: 19, name: "Wa Qalallazina", ar: "وَقَالَ الَّذِينَ", rukus: 19 },
+        { id: 20, name: "A'man Khalaqa", ar: "أَمَّنْ خَلَقَ", rukus: 16 },
+        { id: 21, name: "Utlu Ma Oohi", ar: "اتْلُ مَا أُوحِيَ", rukus: 15 },
+        { id: 22, name: "Wa Manyaqnut", ar: "وَمَنْ يَقْنُتْ", rukus: 16 },
+        { id: 23, name: "Wa Mali", ar: "وَمَا لِي", rukus: 14 },
+        { id: 24, name: "Faman Azlam", ar: "فَمَنْ أَظْلَمُ", rukus: 20 },
+        { id: 25, name: "Elahe Yuruddo", ar: "إِلَيْهِ يُرَدُّ", rukus: 12 },
+        { id: 26, name: "Ha'a Meem", ar: "حم", rukus: 19 },
+        { id: 27, name: "Qala Fama Khatbukum", ar: "قَالَ فَمَا خَطْبُكُمْ", rukus: 20 },
+        { id: 28, name: "Qadd Sami Allah", ar: "قَدْ سَمِعَ اللَّهُ", rukus: 20 },
+        { id: 29, name: "Tabarakallazi", ar: "تَبَارَكَ الَّذِي", rukus: 22 },
+        { id: 30, name: "Amma Yatasa'aloon", ar: "عَمَّ يَتَسَاءَلُونَ", rukus: 39 }
+    ];
+
+    // --- State Management ---
+    // progressData: { paraId: [ruku1, ruku2...] }
+    // customRukuCounts: { paraId: number } (stores user overrides)
+    let progressData = JSON.parse(localStorage.getItem('quranTrackerAdv')) || {};
+    let customRukuCounts = JSON.parse(localStorage.getItem('quranTrackerCounts')) || {};
+    
+    let currentOpenParaId = null;
+
+    // --- DOM Elements ---
+    const listContainer = document.getElementById('para-list');
+    const modal = document.getElementById('modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalArabic = document.getElementById('modal-arabic');
+    const rukuGrid = document.getElementById('ruku-grid');
+    const currentRukuTotalEl = document.getElementById('current-ruku-total');
+
+    // --- Functions ---
+
+    function getRukuCount(paraId) {
+        if (customRukuCounts[paraId]) {
+            return customRukuCounts[paraId];
+        }
+        return defaultParaData.find(p => p.id === paraId).rukus;
+    }
+
+    function init() {
+        renderList();
+        updateDashboard();
+    }
+
+    function renderList() {
+        listContainer.innerHTML = '';
+        
+        defaultParaData.forEach(para => {
+            const totalRukus = getRukuCount(para.id);
+            const completedList = progressData[para.id] || [];
+            
+            // Cleanup: remove numbers that might exceed current total (if reduced)
+            const validCompletedList = completedList.filter(r => r <= totalRukus);
+            
+            const isCompleted = validCompletedList.length >= totalRukus && totalRukus > 0;
+            const percentage = totalRukus > 0 ? Math.round((validCompletedList.length / totalRukus) * 100) : 0;
+
+            const card = document.createElement('div');
+            card.className = `para-card ${isCompleted ? 'completed' : ''}`;
+            card.onclick = () => openModal(para.id);
+
+            card.innerHTML = `
+                <div class="para-info">
+                    <div class="para-icon">${para.id}</div>
+                    <div class="para-text">
+                        <h3>${para.name}</h3>
+                        <p>${para.ar}</p>
+                    </div>
+                </div>
+                <div class="para-progress-mini">
+                    <span class="mini-stat">${validCompletedList.length}/${totalRukus}</span>
+                    <div class="mini-bar">
+                        <div class="mini-fill" style="width: ${percentage}%"></div>
+                    </div>
+                </div>
+            `;
+            listContainer.appendChild(card);
+        });
+    }
+
+    function openModal(paraId) {
+        currentOpenParaId = paraId;
+        const para = defaultParaData.find(p => p.id === paraId);
+        const totalRukus = getRukuCount(paraId);
+        const completedList = progressData[paraId] || [];
+
+        modalTitle.innerText = `Para ${para.id}: ${para.name}`;
+        modalArabic.innerText = para.ar;
+        currentRukuTotalEl.innerText = totalRukus;
+        
+        renderBubbles(totalRukus, completedList);
+
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden'; 
+    }
+
+    function renderBubbles(total, completedList) {
+        rukuGrid.innerHTML = '';
+        for (let i = 1; i <= total; i++) {
+            const bubble = document.createElement('div');
+            const isChecked = completedList.includes(i);
+            
+            bubble.className = `ruku-bubble ${isChecked ? 'checked' : ''}`;
+            bubble.innerText = i;
+            bubble.onclick = () => toggleRuku(currentOpenParaId, i, bubble);
+            
+            rukuGrid.appendChild(bubble);
+        }
+    }
+
+    // --- New: Adjust Ruku Counts ---
+    function adjustRukuCount(amount) {
+        if (!currentOpenParaId) return;
+
+        let currentTotal = getRukuCount(currentOpenParaId);
+        let newTotal = currentTotal + amount;
+
+        if (newTotal < 1) return; // Minimum 1 ruku
+        if (newTotal > 60) return; // Reasonable max limit
+
+        // Save custom count
+        customRukuCounts[currentOpenParaId] = newTotal;
+        localStorage.setItem('quranTrackerCounts', JSON.stringify(customRukuCounts));
+
+        // Update UI immediately
+        currentRukuTotalEl.innerText = newTotal;
+        
+        // Re-render bubbles
+        const completedList = progressData[currentOpenParaId] || [];
+        renderBubbles(newTotal, completedList);
+        
+        // Refresh background list slightly to reflect count change visually later
+        // (Will fully update on close)
+    }
+
+    function closeModal(e) {
+        if(e.target === modal) {
+            closeModalDirect();
+        }
+    }
+
+    function closeModalDirect() {
+        modal.classList.remove('active');
+        document.body.style.overflow = 'auto';
+        renderList(); 
+        updateDashboard();
+        showToast();
+    }
+
+    function toggleRuku(paraId, rukuIndex, bubbleEl) {
+        if (!progressData[paraId]) {
+            progressData[paraId] = [];
+        }
+
+        const list = progressData[paraId];
+        const index = list.indexOf(rukuIndex);
+
+        if (index > -1) {
+            list.splice(index, 1);
+            bubbleEl.classList.remove('checked');
+        } else {
+            list.push(rukuIndex);
+            bubbleEl.classList.add('checked');
+        }
+
+        localStorage.setItem('quranTrackerAdv', JSON.stringify(progressData));
+    }
+
+    function updateDashboard() {
+        let totalRukusRead = 0;
+        let totalParasCompleted = 0;
+        let grandTotalRukus = 0;
+
+        defaultParaData.forEach(para => {
+            const totalForPara = getRukuCount(para.id);
+            grandTotalRukus += totalForPara;
+            
+            const completed = progressData[para.id] || [];
+            // Only count valid rukus (in case count was reduced)
+            const validCompleted = completed.filter(r => r <= totalForPara).length;
+            
+            totalRukusRead += validCompleted;
+            
+            if (validCompleted >= totalForPara && totalForPara > 0) {
+                totalParasCompleted++;
+            }
+        });
+
+        const percent = grandTotalRukus > 0 ? Math.round((totalRukusRead / grandTotalRukus) * 100) : 0;
+
+        document.getElementById('total-paras-count').innerText = totalParasCompleted;
+        document.getElementById('total-ruku-count').innerText = totalRukusRead;
+        document.getElementById('percent-count').innerText = `${percent}%`;
+        document.getElementById('main-progress').style.width = `${percent}%`;
+    }
+
+    function showToast() {
+        const toast = document.getElementById('toast');
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2000);
+    }
+
+    // --- Init ---
+    init();
+
+</script>
+
+</body>
+</html>
