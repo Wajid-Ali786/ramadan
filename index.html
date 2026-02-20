@@ -3,37 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Ramadan Quran Tracker Pro</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Amiri:wght@700&display=swap" rel="stylesheet">
+    <title>Quran Tracker Premium Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Light Theme */
-            --primary: #047857; /* Emerald 700 */
+            /* Premium Light Theme */
+            --primary: #059669; /* Emerald 600 */
+            --primary-gradient: linear-gradient(135deg, #10b981 0%, #047857 100%);
             --primary-light: #d1fae5;
             --primary-dark: #064e3b;
             --accent: #d97706; /* Amber 600 */
-            --bg: #f3f4f6;
+            --accent-gradient: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+            --bg: #f1f5f9;
             --card-bg: #ffffff;
-            --text-main: #111827;
-            --text-muted: #6b7280;
-            --border: #e5e7eb;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            --radius: 16px;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.02);
+            --shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.05), 0 4px 10px -2px rgba(0, 0, 0, 0.03);
+            --shadow-lg: 0 15px 35px -5px rgba(0, 0, 0, 0.1);
+            --radius: 24px;
             --font-main: 'Plus Jakarta Sans', sans-serif;
             --font-ar: 'Amiri', serif;
+            --glass-bg: rgba(255, 255, 255, 0.85);
         }
 
         [data-theme="dark"] {
-            --primary: #10b981; /* Emerald 500 */
+            /* Premium Dark Theme */
+            --primary: #10b981; 
+            --primary-gradient: linear-gradient(135deg, #34d399 0%, #059669 100%);
             --primary-light: #064e3b;
-            --primary-dark: #ecfdf5; /* Text on primary */
+            --primary-dark: #ecfdf5; 
             --accent: #fbbf24;
-            --bg: #0f172a; /* Slate 900 */
-            --card-bg: #1e293b; /* Slate 800 */
-            --text-main: #f3f4f6;
+            --accent-gradient: linear-gradient(135deg, #fcd34d 0%, #b45309 100%);
+            --bg: #0b1120; 
+            --card-bg: #1e293b; 
+            --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --border: #334155;
-            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            --glass-bg: rgba(30, 41, 59, 0.85);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
@@ -42,19 +51,21 @@
             font-family: var(--font-main);
             background-color: var(--bg);
             color: var(--text-main);
-            padding-bottom: 100px;
-            transition: background-color 0.3s, color 0.3s;
+            padding-bottom: 120px;
+            transition: background-color 0.4s ease, color 0.4s ease;
             overscroll-behavior-y: none;
         }
 
-        /* --- Header & Nav --- */
+        /* --- Header & Clock --- */
         .app-header {
-            background: var(--card-bg);
-            padding: 20px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            padding: 20px 24px;
             position: sticky;
             top: 0;
             z-index: 50;
-            box-shadow: var(--shadow);
+            box-shadow: var(--shadow-sm);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -62,253 +73,263 @@
         }
 
         .logo-area h1 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--primary);
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            letter-spacing: -0.5px;
         }
         
-        .logo-icon { font-size: 1.5rem; }
-
-        .header-actions { display: flex; gap: 10px; }
+        .header-actions { display: flex; gap: 12px; }
 
         .icon-btn {
-            background: transparent;
+            background: var(--card-bg);
             border: 1px solid var(--border);
             color: var(--text-main);
-            width: 40px; 
-            height: 40px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 1.1rem;
-            transition: 0.2s;
+            width: 48px; height: 48px;
+            border-radius: 16px;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; font-size: 1.2rem;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .icon-btn:hover { background: var(--bg); }
+        .icon-btn:hover { background: var(--bg); transform: translateY(-2px); box-shadow: var(--shadow); }
         .icon-btn:active { transform: scale(0.95); }
+
+        .datetime-widget {
+            max-width: 800px; margin: 20px auto 0; padding: 0 24px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .time-display { font-size: 2rem; font-weight: 800; color: var(--text-main); line-height: 1; letter-spacing: -1px; }
+        .date-display { font-size: 0.9rem; font-weight: 600; color: var(--text-muted); margin-top: 4px; }
+        .hijri-display { background: var(--primary-light); color: var(--primary-dark); padding: 6px 14px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; }
+
+        /* --- Navigation Tabs --- */
+        .nav-tabs {
+            max-width: 800px; margin: 24px auto 16px; padding: 0 24px;
+            display: flex; gap: 12px;
+        }
+
+        .tab-btn {
+            flex: 1; padding: 16px;
+            border-radius: 18px; border: 1px solid var(--border);
+            background: var(--card-bg); color: var(--text-muted);
+            font-size: 1.05rem; font-weight: 700; cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-sm);
+            position: relative; overflow: hidden;
+        }
+
+        .tab-btn::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--primary-gradient); opacity: 0; transition: opacity 0.3s ease; z-index: 1;
+        }
+
+        .tab-btn span { position: relative; z-index: 2; transition: color 0.3s ease; }
+
+        .tab-btn.active { border-color: transparent; box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.4); transform: translateY(-2px); }
+        .tab-btn.active::before { opacity: 1; }
+        .tab-btn.active span { color: white; }
 
         /* --- Dashboard Stats --- */
         .dashboard {
-            padding: 20px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            padding: 10px 24px 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+            max-width: 800px; margin: 0 auto;
         }
 
         .stat-card {
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
+            background: var(--card-bg); padding: 24px; border-radius: var(--radius);
+            box-shadow: var(--shadow); border: 1px solid var(--border);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            text-align: center; transition: transform 0.3s ease;
         }
+        .stat-card.full-width { grid-column: span 2; flex-direction: row; justify-content: space-between; align-items: center; text-align: left; padding: 28px 32px; }
 
-        .stat-card.full-width { grid-column: span 2; align-items: flex-start; text-align: left; flex-direction: row; justify-content: space-between; }
-
-        .stat-value { font-size: 2rem; font-weight: 700; color: var(--primary); line-height: 1; }
-        .stat-label { font-size: 0.8rem; color: var(--text-muted); font-weight: 500; margin-top: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .stat-value { font-size: 2.5rem; font-weight: 800; color: var(--text-main); line-height: 1; margin-bottom: 8px; letter-spacing: -1px;}
+        .stat-value.highlight { background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .stat-value.accent { background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .stat-label { font-size: 0.9rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
 
         /* Circular Progress */
-        .progress-ring { position: relative; width: 60px; height: 60px; }
+        .progress-ring { position: relative; width: 76px; height: 76px; margin-bottom: 12px;}
         .progress-ring svg { transform: rotate(-90deg); width: 100%; height: 100%; }
-        .progress-ring circle { fill: none; stroke-width: 5; }
-        .bg-ring { stroke: var(--border); }
-        .fill-ring { 
-            stroke: var(--accent); 
-            stroke-dasharray: 157; 
-            stroke-dashoffset: 157; 
-            transition: stroke-dashoffset 1s ease-out; 
-            stroke-linecap: round;
-        }
-        .ring-text {
-            position: absolute; top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 0.85rem; font-weight: 700; color: var(--text-main);
+        .progress-ring circle { fill: none; stroke-width: 6; }
+        .bg-ring { stroke: var(--bg); }
+        .fill-ring { stroke: var(--primary); stroke-dasharray: 188; stroke-dashoffset: 188; transition: stroke-dashoffset 1s cubic-bezier(0.4, 0, 0.2, 1); stroke-linecap: round; }
+        .ring-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1rem; font-weight: 800; color: var(--text-main); }
+
+        /* --- Views Container --- */
+        .view-section { display: none; animation: scaleFadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .view-section.active { display: block; }
+
+        @keyframes scaleFadeIn {
+            from { opacity: 0; transform: translateY(15px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        /* --- Para List --- */
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 0 20px;
-            display: grid;
-            gap: 12px;
+        .container { max-width: 800px; margin: 0 auto; padding: 0 24px; display: grid; gap: 16px; }
+        @media (min-width: 768px) { .container { grid-template-columns: repeat(2, 1fr); } }
+
+        /* --- List Cards --- */
+        .list-card {
+            background: var(--card-bg); border-radius: var(--radius); padding: 20px;
+            display: flex; align-items: center; gap: 18px; box-shadow: var(--shadow);
+            border: 1px solid var(--border); cursor: pointer; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative; overflow: hidden;
         }
 
-        @media (min-width: 768px) {
-            .container { grid-template-columns: repeat(2, 1fr); }
-            .dashboard { max-width: 800px; margin: 0 auto; }
-        }
-
-        .para-card {
-            background: var(--card-bg);
-            border-radius: var(--radius);
-            padding: 16px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border);
-            cursor: pointer;
-            transition: all 0.2s ease;
-            position: relative;
-        }
-
-        .para-card:hover { transform: translateY(-2px); }
-        .para-card:active { transform: scale(0.98); }
-
-        .para-card.last-active { border: 2px solid var(--accent); }
-        .last-active-badge {
-            position: absolute; top: -8px; right: 10px;
-            background: var(--accent); color: white;
-            font-size: 0.6rem; padding: 2px 6px; border-radius: 4px;
-            font-weight: bold;
-        }
-
-        .para-card.completed {
-            background: var(--primary);
-            border-color: var(--primary);
-        }
-        .para-card.completed * { color: white !important; }
-        .para-card.completed .para-icon { border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.2); }
-        .para-card.completed .mini-bar { background: rgba(255,255,255,0.3); }
-        .para-card.completed .mini-fill { background: #fff; }
+        .list-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+        .list-card:active { transform: scale(0.97); }
 
         .para-icon {
-            width: 44px; height: 44px;
-            border-radius: 12px;
-            background: var(--bg);
-            color: var(--text-muted);
-            font-weight: 700;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 0.9rem;
-            flex-shrink: 0;
-            border: 1px solid var(--border);
+            width: 54px; height: 54px; border-radius: 16px; background: var(--bg);
+            color: var(--text-main); font-weight: 800; display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; flex-shrink: 0; border: 1px solid var(--border); transition: 0.3s;
         }
 
-        .para-content { flex: 1; overflow: hidden; }
-        .para-title { font-size: 1rem; font-weight: 600; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .para-arabic { font-family: var(--font-ar); color: var(--accent); font-size: 1.1rem; line-height: 1.2; }
+        .card-content { flex: 1; overflow: hidden; }
+        .card-title { font-size: 1.1rem; font-weight: 800; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-main); }
+        .card-arabic { font-family: var(--font-ar); color: var(--accent); font-size: 1.5rem; line-height: 1.2; }
+        .card-subtitle { font-size: 0.85rem; color: var(--text-muted); font-weight: 600; margin-top: 4px; }
 
-        .para-meta { text-align: right; min-width: 60px; }
-        .meta-text { font-size: 0.75rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 6px; }
+        .card-meta { text-align: right; min-width: 70px; }
+        .meta-text { font-size: 0.85rem; font-weight: 800; color: var(--text-muted); display: block; margin-bottom: 8px; }
         
-        .mini-bar { width: 100%; height: 6px; background: var(--border); border-radius: 10px; overflow: hidden; }
-        .mini-fill { height: 100%; background: var(--primary); width: 0%; transition: width 0.3s ease; border-radius: 10px; }
+        .mini-bar { width: 100%; height: 8px; background: var(--bg); border-radius: 10px; overflow: hidden; border: 1px solid var(--border); }
+        .mini-fill { height: 100%; background: var(--primary-gradient); width: 0%; transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 10px; }
 
-        /* --- Modal --- */
+        /* Card States */
+        .list-card.completed { background: var(--primary-gradient); border-color: transparent; }
+        .list-card.completed * { color: white !important; }
+        .list-card.completed .para-icon { border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.2); }
+        .list-card.completed .mini-bar { background: rgba(0,0,0,0.2); border-color: transparent; }
+        .list-card.completed .mini-fill { background: #fff; }
+
+        /* --- Modals --- */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
-            z-index: 100; opacity: 0; visibility: hidden; transition: 0.3s;
+            background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+            z-index: 100; opacity: 0; visibility: hidden; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex; align-items: flex-end; justify-content: center;
         }
         .modal-overlay.active { opacity: 1; visibility: visible; }
 
         .modal-sheet {
-            background: var(--card-bg);
-            width: 100%; max-width: 500px;
-            border-radius: 24px 24px 0 0;
-            padding: 24px;
-            max-height: 90vh;
-            display: flex; flex-direction: column;
-            transform: translateY(100%); transition: 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+            background: var(--card-bg); width: 100%; max-width: 500px;
+            border-radius: 32px 32px 0 0; padding: 32px 24px 24px;
+            max-height: 90vh; display: flex; flex-direction: column;
+            transform: translateY(100%); transition: 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+            box-shadow: 0 -20px 50px rgba(0,0,0,0.15);
         }
         .modal-overlay.active .modal-sheet { transform: translateY(0); }
 
         @media(min-width: 500px) {
             .modal-overlay { align-items: center; }
-            .modal-sheet { border-radius: 24px; transform: translateY(20px) scale(0.95); }
+            .modal-sheet { border-radius: 28px; transform: translateY(40px) scale(0.95); }
             .modal-overlay.active .modal-sheet { transform: translateY(0) scale(1); }
         }
 
-        .modal-header { text-align: center; margin-bottom: 20px; position: relative; }
-        .handle-bar { width: 40px; height: 5px; background: var(--border); border-radius: 10px; margin: -10px auto 20px auto; }
-        .modal-title { font-size: 1.5rem; font-weight: 700; color: var(--primary); }
-        .modal-arabic { font-family: var(--font-ar); font-size: 1.4rem; color: var(--accent); margin-top: 4px; }
+        .modal-header { text-align: center; margin-bottom: 24px; position: relative; }
+        .handle-bar { width: 48px; height: 6px; background: var(--border); border-radius: 10px; position: absolute; top: -16px; left: 50%; transform: translateX(-50%); }
+        .modal-title { font-size: 2rem; font-weight: 800; color: var(--text-main); letter-spacing: -0.5px; }
+        .modal-arabic { font-family: var(--font-ar); font-size: 2.2rem; color: var(--accent); margin-top: 8px; }
 
-        /* Quick Actions */
-        .quick-actions { display: flex; gap: 10px; margin-bottom: 15px; }
+        .quick-actions { display: flex; gap: 12px; margin-bottom: 24px; }
         .btn-action {
-            flex: 1;
-            padding: 10px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            background: var(--bg);
-            color: var(--text-muted);
-            font-size: 0.8rem;
-            font-weight: 600;
-            cursor: pointer;
+            flex: 1; padding: 14px; border: 1px solid var(--border); border-radius: 16px;
+            background: var(--bg); color: var(--text-muted); font-size: 0.95rem; font-weight: 700;
+            cursor: pointer; transition: 0.2s; box-shadow: var(--shadow-sm);
         }
-        .btn-action:hover { background: var(--border); }
+        .btn-action:hover { background: var(--border); color: var(--text-main); }
+        .btn-action:active { transform: scale(0.95); }
 
-        /* Ruku Grid */
         .ruku-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(48px, 1fr));
-            gap: 10px;
-            overflow-y: auto;
-            padding: 5px;
-            margin-bottom: 20px;
-            flex: 1;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: 14px;
+            overflow-y: auto; padding: 4px; margin-bottom: 24px; flex: 1;
         }
 
         .ruku-bubble {
-            aspect-ratio: 1;
-            border-radius: 14px;
-            background: var(--bg);
-            border: 2px solid transparent;
-            color: var(--text-muted);
-            font-weight: 600;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer;
-            transition: 0.2s;
-            font-size: 0.95rem;
+            aspect-ratio: 1; border-radius: 18px; background: var(--bg); border: 2px solid var(--border);
+            color: var(--text-muted); font-weight: 800; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); font-size: 1.1rem;
         }
-        .ruku-bubble:hover { background: var(--border); }
+        .ruku-bubble:hover { transform: scale(1.05); border-color: var(--primary-light); color: var(--text-main); }
         .ruku-bubble.checked {
-            background: var(--primary);
-            color: white;
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
-            transform: scale(1.05);
+            background: var(--primary-gradient); color: white; border-color: transparent;
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4); transform: scale(1.1);
         }
 
         .btn-primary {
-            width: 100%; padding: 16px;
-            background: var(--primary); color: white;
-            border: none; border-radius: 14px;
-            font-size: 1rem; font-weight: 600;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 100%; padding: 20px; background: var(--primary-gradient); color: white;
+            border: none; border-radius: 20px; font-size: 1.15rem; font-weight: 800; cursor: pointer;
+            box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.5); transition: all 0.2s;
         }
-        .btn-primary:active { transform: scale(0.98); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 15px 30px -5px rgba(16, 185, 129, 0.6); }
+        .btn-primary:active { transform: scale(0.97); }
 
-        /* Settings Modal */
+        /* Huge Counter for Surah Modal */
+        .huge-counter { font-size: 5rem; font-weight: 800; text-align: center; color: var(--primary); margin: 20px 0; line-height: 1; }
+        .counter-controls { display: flex; gap: 16px; margin-bottom: 30px; }
+        .counter-btn { 
+            flex: 1; padding: 24px; border-radius: 24px; border: none; font-size: 2rem; font-weight: 800; cursor: pointer; transition: 0.2s;
+        }
+        .btn-minus { background: var(--bg); color: var(--text-muted); }
+        .btn-plus { background: var(--primary-gradient); color: white; box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3); }
+        .btn-minus:active, .btn-plus:active { transform: scale(0.95); }
+
+        /* Form Inputs */
+        .form-group { margin-bottom: 20px; text-align: left; }
+        .form-label { display: block; font-size: 0.9rem; font-weight: 700; color: var(--text-muted); margin-bottom: 8px; }
+        .form-input {
+            width: 100%; padding: 16px; border-radius: 16px; border: 2px solid var(--border);
+            background: var(--bg); color: var(--text-main); font-size: 1.05rem; font-family: var(--font-main);
+            transition: 0.3s;
+        }
+        .form-input:focus { border-color: var(--primary); background: var(--card-bg); }
+
+        /* Custom Add Button */
+        .btn-add-custom {
+            background: var(--bg); border: 2px dashed var(--border); color: var(--text-muted);
+            border-radius: var(--radius); padding: 24px; text-align: center; font-weight: 800;
+            font-size: 1.1rem; cursor: pointer; transition: 0.3s; margin-top: 10px;
+        }
+        .btn-add-custom:hover { background: var(--primary-light); border-color: var(--primary); color: var(--primary-dark); }
+
+        /* Settings Modal Options */
         .settings-option {
-            padding: 15px; border-bottom: 1px solid var(--border);
+            padding: 20px; border-bottom: 1px solid var(--border);
             display: flex; justify-content: space-between; align-items: center;
-            cursor: pointer;
+            cursor: pointer; transition: background 0.2s; border-radius: 16px;
         }
-        .settings-option:last-child { border: none; }
-        .settings-option h4 { font-size: 0.95rem; margin-bottom: 2px; }
-        .settings-option p { font-size: 0.75rem; color: var(--text-muted); }
+        .settings-option:hover { background: var(--bg); }
+        .settings-option h4 { font-size: 1.1rem; font-weight: 800; margin-bottom: 4px; color: var(--text-main); }
+        .settings-option p { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; }
+        .settings-icon { font-size: 1.6rem; background: var(--bg); width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 14px; }
 
-        /* Confetti Canvas */
-        #confetti {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none; z-index: 9999;
+        /* --- Toast Notifications --- */
+        #toast-container {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            display: flex; flex-direction: column; gap: 10px; z-index: 9999; pointer-events: none;
         }
+        .toast {
+            background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(10px); color: white;
+            padding: 14px 24px; border-radius: 50px; font-size: 0.95rem; font-weight: 600;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2); display: flex; align-items: center; gap: 10px;
+            animation: slideUpFade 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            opacity: 0; transform: translateY(50px);
+        }
+        .toast.success .t-icon { color: #34d399; }
+        .toast.error .t-icon { color: #f87171; }
+        .toast.fade-out { animation: fadeOutDown 0.4s ease forwards; }
+
+        @keyframes slideUpFade { to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeOutDown { to { opacity: 0; transform: translateY(20px); } }
+
+        #confetti { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9000; }
     </style>
 </head>
 <body>
@@ -317,88 +338,156 @@
 
     <nav class="app-header">
         <div class="logo-area">
-            <h1><span class="logo-icon">۞</span> Quran Tracker</h1>
+            <h1>۞ Quran Pro</h1>
         </div>
         <div class="header-actions">
             <button class="icon-btn" onclick="toggleTheme()" title="Toggle Dark Mode">
                 <span id="theme-icon">🌙</span>
             </button>
-            <button class="icon-btn" onclick="openSettings()" title="Settings">
+            <button class="icon-btn" onclick="openModal('settings-modal')" title="Settings">
                 <span>⚙️</span>
             </button>
         </div>
     </nav>
 
+    <!-- Date & Time Widget -->
+    <div class="datetime-widget">
+        <div>
+            <div class="time-display" id="sys-time">00:00</div>
+            <div class="date-display" id="sys-date">Loading...</div>
+        </div>
+        <div>
+            <div class="hijri-display" id="sys-hijri">Ramadan 1446</div>
+        </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="nav-tabs">
+        <button class="tab-btn active" id="tab-paras" onclick="switchTab('paras')"><span>Juz / Paras</span></button>
+        <button class="tab-btn" id="tab-surahs" onclick="switchTab('surahs')"><span>Surahs & Wazaif</span></button>
+    </div>
+
+    <!-- Dashboard -->
     <div class="dashboard">
         <div class="stat-card">
-            <div class="stat-value" id="dash-paras">0</div>
-            <div class="stat-label">Paras Completed</div>
+            <div class="stat-value highlight" id="dash-paras">0</div>
+            <div class="stat-label">Paras Done</div>
         </div>
         <div class="stat-card">
             <div class="progress-ring">
                 <svg>
-                    <circle class="bg-ring" cx="30" cy="30" r="25"></circle>
-                    <circle class="fill-ring" id="progress-circle" cx="30" cy="30" r="25"></circle>
+                    <circle class="bg-ring" cx="38" cy="38" r="34"></circle>
+                    <circle class="fill-ring" id="progress-circle" cx="38" cy="38" r="34"></circle>
                 </svg>
                 <div class="ring-text" id="dash-percent">0%</div>
             </div>
-            <div class="stat-label">Total Progress</div>
+            <div class="stat-label">Progress</div>
         </div>
         <div class="stat-card full-width">
-            <div style="text-align: left;">
-                <div class="stat-value" id="dash-ruku-left" style="font-size: 1.5rem;">0</div>
-                <div class="stat-label">Rukus Remaining</div>
+            <div>
+                <div class="stat-value" id="dash-ruku-left" style="font-size: 2rem;">0</div>
+                <div class="stat-label">Rukus Left</div>
             </div>
             <div style="text-align: right;">
-                <div class="stat-value" id="dash-ruku-done" style="font-size: 1.5rem; color: var(--accent);">0</div>
-                <div class="stat-label">Rukus Read</div>
+                <div class="stat-value accent" id="dash-surah-total" style="font-size: 2rem;">0</div>
+                <div class="stat-label">Total Recitations</div>
             </div>
         </div>
     </div>
 
-    <div class="container" id="para-list">
-        <!-- List Items Generated Here -->
+    <!-- PARA VIEW -->
+    <div id="view-paras" class="view-section active container">
+        <!-- Generates via JS -->
     </div>
 
-    <!-- Edit Modal -->
-    <div class="modal-overlay" id="edit-modal" onclick="closeEditModal(event)">
+    <!-- SURAH VIEW -->
+    <div id="view-surahs" class="view-section container">
+        <div id="surah-list"></div>
+        <button class="btn-add-custom" onclick="openModal('add-surah-modal')">
+            + Add Custom Surah or Wazeefa
+        </button>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container"></div>
+
+    <!-- ================= MODALS ================= -->
+
+    <!-- Edit Para Modal -->
+    <div class="modal-overlay" id="edit-modal" onclick="closeModal('edit-modal', true)">
         <div class="modal-sheet" onclick="event.stopPropagation()">
             <div class="handle-bar"></div>
             <div class="modal-header">
                 <h2 class="modal-title" id="modal-title">Para 1</h2>
                 <div class="modal-arabic" id="modal-arabic">الم</div>
-                <div style="margin-top: 10px; font-size: 0.8rem; color: var(--text-muted);">
-                    Total Rukus: <strong id="modal-total-count">16</strong> 
-                    <button onclick="adjustTotal(1)" style="border:1px solid var(--border); background:var(--bg); border-radius:4px; margin-left:5px; cursor:pointer;">+</button>
-                    <button onclick="adjustTotal(-1)" style="border:1px solid var(--border); background:var(--bg); border-radius:4px; cursor:pointer;">-</button>
+                <div style="margin-top: 15px; font-size: 0.95rem; color: var(--text-muted); font-weight: 700;">
+                    Total Rukus: <strong id="modal-total-count" style="color: var(--text-main); font-size: 1.1rem; margin: 0 8px;">16</strong> 
+                    <button style="padding: 4px 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); cursor: pointer;" onclick="adjustTotal(-1)">-</button>
+                    <button style="padding: 4px 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); cursor: pointer;" onclick="adjustTotal(1)">+</button>
                 </div>
             </div>
-
             <div class="quick-actions">
                 <button class="btn-action" onclick="markAllRukus(true)">Select All</button>
                 <button class="btn-action" onclick="markAllRukus(false)">Clear All</button>
             </div>
+            <div class="ruku-grid" id="ruku-grid"></div>
+            <button class="btn-primary" onclick="closeModal('edit-modal', true)">Save Progress</button>
+        </div>
+    </div>
+
+    <!-- Surah Counter Modal -->
+    <div class="modal-overlay" id="surah-modal" onclick="closeModal('surah-modal')">
+        <div class="modal-sheet" onclick="event.stopPropagation()">
+            <div class="handle-bar"></div>
+            <div class="modal-header">
+                <h2 class="modal-title" id="s-modal-title">Surah Name</h2>
+                <div class="modal-arabic" id="s-modal-arabic">يس</div>
+            </div>
+            <div class="huge-counter" id="s-modal-count">0</div>
+            <div class="counter-controls">
+                <button class="counter-btn btn-minus" onclick="modifySurahCount(-1)">-</button>
+                <button class="counter-btn btn-plus" onclick="modifySurahCount(1)">+1 Time</button>
+            </div>
+            <button class="btn-primary" style="background: var(--bg); color: var(--text-main); box-shadow: none; border: 2px solid var(--border);" onclick="closeModal('surah-modal')">Done Reading</button>
+        </div>
+    </div>
+
+    
+    <!-- Add Custom Surah Modal -->
+    <div class="modal-overlay" id="add-surah-modal" onclick="closeModal('add-surah-modal')">
+        <div class="modal-sheet" onclick="event.stopPropagation()">
+            <div class="handle-bar"></div>
+            <div class="modal-header"><h2 class="modal-title">Add New Tracking</h2></div>
             
-            <div class="ruku-grid" id="ruku-grid">
-                <!-- Bubbles -->
+            <div class="form-group">
+                <label class="form-label">Name (e.g., Surah Al-Kahf)</label>
+                <input type="text" id="new-surah-name" class="form-input" placeholder="Enter name...">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Arabic Name (Optional)</label>
+                <input type="text" id="new-surah-ar" class="form-input" placeholder="الكهف" style="font-family: var(--font-ar); font-size: 1.3rem;" dir="rtl">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Subtitle / Translation (Optional)</label>
+                <input type="text" id="new-surah-trans" class="form-input" placeholder="Read on Fridays">
             </div>
 
-            <button class="btn-primary" onclick="closeEditModal()">Save Progress</button>
+            <button class="btn-primary" onclick="saveCustomSurah()" style="margin-top: 10px;">Save & Add</button>
         </div>
     </div>
 
     <!-- Settings Modal -->
-    <div class="modal-overlay" id="settings-modal" onclick="closeSettingsModal(event)">
-        <div class="modal-sheet" style="max-height: 50vh;" onclick="event.stopPropagation()">
+    <div class="modal-overlay" id="settings-modal" onclick="closeModal('settings-modal')">
+        <div class="modal-sheet" style="max-height: 70vh;" onclick="event.stopPropagation()">
             <div class="handle-bar"></div>
-            <h2 style="text-align:center; margin-bottom:20px; font-weight:700;">Settings</h2>
+            <h2 style="text-align:center; margin-bottom:24px; font-weight:800; font-size: 1.8rem;">Settings</h2>
             
             <div class="settings-option" onclick="exportData()">
                 <div>
                     <h4>Backup Data</h4>
-                    <p>Download a file to save progress</p>
+                    <p>Download a file to secure your progress</p>
                 </div>
-                <span>📥</span>
+                <span class="settings-icon">📥</span>
             </div>
             
             <div class="settings-option" onclick="triggerImport()">
@@ -406,75 +495,113 @@
                     <h4>Restore Data</h4>
                     <p>Load progress from a backup file</p>
                 </div>
-                <span>📤</span>
+                <span class="settings-icon">📤</span>
             </div>
             <input type="file" id="import-file" style="display: none;" onchange="importData(this)">
 
-            <div class="settings-option" onclick="resetAll()">
+            <div class="settings-option" onclick="resetAll()" style="margin-top: 24px; border: 2px solid #ef4444; background: rgba(239, 68, 68, 0.05);">
                 <div>
-                    <h4 style="color: #ef4444;">Reset Everything</h4>
-                    <p>Clear all progress and start over</p>
+                    <h4 style="color: #ef4444;">Factory Reset</h4>
+                    <p style="color: #ef4444; opacity: 0.8;">Delete all local app data</p>
                 </div>
-                <span>⚠️</span>
+                <span class="settings-icon" style="background: rgba(239, 68, 68, 0.1); color: #ef4444;">⚠️</span>
             </div>
         </div>
     </div>
 
 <script>
-    // --- Data ---
+    // --- Data Definitions ---
     const defaultParaData = [
-        { id: 1, name: "Alif Lam Meem", ar: "الم", rukus: 16 },
-        { id: 2, name: "Sayaqool", ar: "سَيَقُولُ", rukus: 16 },
-        { id: 3, name: "Tilkal Rusull", ar: "تِلْكَ الرُّسُلُ", rukus: 20 },
-        { id: 4, name: "Lan Tanaloo", ar: "لَنْ تَنَالُوا", rukus: 16 },
-        { id: 5, name: "Wal Mohsanat", ar: "وَالْمُحْصَنَاتُ", rukus: 14 },
-        { id: 6, name: "La Yuhibbullah", ar: "لَا يُحِبُّ اللَّهُ", rukus: 20 },
-        { id: 7, name: "Wa Iza Samiu", ar: "وَإِذَا سَمِعُوا", rukus: 16 },
-        { id: 8, name: "Wa Lau Annana", ar: "وَلَوْ أَنَّنَا", rukus: 16 },
-        { id: 9, name: "Qalal Malao", ar: "قَالَ الْمَلَأُ", rukus: 24 },
-        { id: 10, name: "Wa A'lamu", ar: "وَاعْلَمُوا", rukus: 11 },
-        { id: 11, name: "Yatazeroon", ar: "يَعْتَذِرُونَ", rukus: 21 },
-        { id: 12, name: "Wa Mamin Da'abat", ar: "وَمَا مِنْ دَابَّةٍ", rukus: 20 },
-        { id: 13, name: "Wa Ma Ubiroo", ar: "وَمَا أُبَرِّئُ", rukus: 13 },
-        { id: 14, name: "Rubama", ar: "رُبَمَا", rukus: 18 },
-        { id: 15, name: "Subhanallazi", ar: "سُبْحَانَ الَّذِي", rukus: 20 },
-        { id: 16, name: "Qala Alam", ar: "قَالَ أَلَمْ", rukus: 20 },
-        { id: 17, name: "Aqtarabo", ar: "اقْتَرَبَ", rukus: 17 },
-        { id: 18, name: "Qadd Aflaha", ar: "قَدْ أَفْلَحَ", rukus: 14 },
-        { id: 19, name: "Wa Qalallazina", ar: "وَقَالَ الَّذِينَ", rukus: 19 },
-        { id: 20, name: "A'man Khalaqa", ar: "أَمَّنْ خَلَقَ", rukus: 16 },
-        { id: 21, name: "Utlu Ma Oohi", ar: "اتْلُ مَا أُوحِيَ", rukus: 15 },
-        { id: 22, name: "Wa Manyaqnut", ar: "وَمَنْ يَقْنُتْ", rukus: 16 },
-        { id: 23, name: "Wa Mali", ar: "وَمَا لِي", rukus: 14 },
-        { id: 24, name: "Faman Azlam", ar: "فَمَنْ أَظْلَمُ", rukus: 20 },
-        { id: 25, name: "Elahe Yuruddo", ar: "إِلَيْهِ يُرَدُّ", rukus: 12 },
-        { id: 26, name: "Ha'a Meem", ar: "حم", rukus: 19 },
-        { id: 27, name: "Qala Fama Khatbukum", ar: "قَالَ فَمَا خَطْبُكُمْ", rukus: 20 },
-        { id: 28, name: "Qadd Sami Allah", ar: "قَدْ سَمِعَ اللَّهُ", rukus: 20 },
-        { id: 29, name: "Tabarakallazi", ar: "تَبَارَكَ الَّذِي", rukus: 22 },
-        { id: 30, name: "Amma Yatasa'aloon", ar: "عَمَّ يَتَسَاءَلُونَ", rukus: 39 }
+        { id: 1, name: "Alif Lam Meem", ar: "الم", rukus: 16 }, { id: 2, name: "Sayaqool", ar: "سَيَقُولُ", rukus: 16 },
+        { id: 3, name: "Tilkal Rusull", ar: "تِلْكَ الرُّسُلُ", rukus: 20 }, { id: 4, name: "Lan Tanaloo", ar: "لَنْ تَنَالُوا", rukus: 16 },
+        { id: 5, name: "Wal Mohsanat", ar: "وَالْمُحْصَنَاتُ", rukus: 14 }, { id: 6, name: "La Yuhibbullah", ar: "لَا يُحِبُّ اللَّهُ", rukus: 20 },
+        { id: 7, name: "Wa Iza Samiu", ar: "وَإِذَا سَمِعُوا", rukus: 16 }, { id: 8, name: "Wa Lau Annana", ar: "وَلَوْ أَنَّنَا", rukus: 16 },
+        { id: 9, name: "Qalal Malao", ar: "قَالَ الْمَلَأُ", rukus: 24 }, { id: 10, name: "Wa A'lamu", ar: "وَاعْلَمُوا", rukus: 11 },
+        { id: 11, name: "Yatazeroon", ar: "يَعْتَذِرُونَ", rukus: 21 }, { id: 12, name: "Wa Mamin Da'abat", ar: "وَمَا مِنْ دَابَّةٍ", rukus: 20 },
+        { id: 13, name: "Wa Ma Ubiroo", ar: "وَمَا أُبَرِّئُ", rukus: 13 }, { id: 14, name: "Rubama", ar: "رُبَمَا", rukus: 18 },
+        { id: 15, name: "Subhanallazi", ar: "سُبْحَانَ الَّذِي", rukus: 20 }, { id: 16, name: "Qala Alam", ar: "قَالَ أَلَمْ", rukus: 20 },
+        { id: 17, name: "Aqtarabo", ar: "اقْتَرَبَ", rukus: 17 }, { id: 18, name: "Qadd Aflaha", ar: "قَدْ أَفْلَحَ", rukus: 14 },
+        { id: 19, name: "Wa Qalallazina", ar: "وَقَالَ الَّذِينَ", rukus: 19 }, { id: 20, name: "A'man Khalaqa", ar: "أَمَّنْ خَلَقَ", rukus: 16 },
+        { id: 21, name: "Utlu Ma Oohi", ar: "اتْلُ مَا أُوحِيَ", rukus: 15 }, { id: 22, name: "Wa Manyaqnut", ar: "وَمَنْ يَقْنُتْ", rukus: 16 },
+        { id: 23, name: "Wa Mali", ar: "وَمَا لِي", rukus: 14 }, { id: 24, name: "Faman Azlam", ar: "فَمَنْ أَظْلَمُ", rukus: 20 },
+        { id: 25, name: "Elahe Yuruddo", ar: "إِلَيْهِ يُرَدُّ", rukus: 12 }, { id: 26, name: "Ha'a Meem", ar: "حم", rukus: 19 },
+        { id: 27, name: "Qala Fama Khatbukum", ar: "قَالَ فَمَا خَطْبُكُمْ", rukus: 20 }, { id: 28, name: "Qadd Sami Allah", ar: "قَدْ سَمِعَ اللَّهُ", rukus: 20 },
+        { id: 29, name: "Tabarakallazi", ar: "تَبَارَكَ الَّذِي", rukus: 22 }, { id: 30, name: "Amma Yatasa'aloon", ar: "عَمَّ يَتَسَاءَلُونَ", rukus: 39 }
+    ];
+
+    const defaultSurahs = [
+        { id: "s_yaseen", name: "Surah Yaseen", ar: "يس", trans: "Heart of the Quran" },
+        { id: "s_mulk", name: "Surah Al-Mulk", ar: "الملك", trans: "Protection from grave" },
+        { id: "s_rahman", name: "Surah Ar-Rahman", ar: "الرحمن", trans: "Beauty of the Quran" },
+        { id: "s_waqiah", name: "Surah Al-Waqi'ah", ar: "الواقعة", trans: "For sustenance" }
     ];
 
     // State Variables
-    let progressData = JSON.parse(localStorage.getItem('qt_progress')) || {};
-    let customCounts = JSON.parse(localStorage.getItem('qt_counts')) || {};
-    let lastActivePara = localStorage.getItem('qt_last_active') || null;
+    let progressData = JSON.parse(localStorage.getItem('qtp_progress')) || {};
+    let customCounts = JSON.parse(localStorage.getItem('qtp_counts')) || {};
+    let surahCounts = JSON.parse(localStorage.getItem('qtp_surahs')) || {};
+    let customSurahs = JSON.parse(localStorage.getItem('qtp_custom_surahs')) || [];
+    
     let currentParaId = null;
+    let currentSurahId = null;
 
-    // --- Init ---
+    // --- Initialization ---
     function init() {
         applyTheme();
-        renderList();
+        startClock();
+        renderParas();
+        renderSurahs();
         updateDashboard();
     }
 
-    // --- Core Logic ---
-    function getTotalRukus(id) {
-        return customCounts[id] || defaultParaData.find(p => p.id === id).rukus;
+    // --- Clock & Date System ---
+    function startClock() {
+        function update() {
+            const now = new Date();
+            document.getElementById('sys-time').innerText = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+            document.getElementById('sys-date').innerText = now.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+            
+            try {
+                // Generate Islamic Date
+                const hijriFormatter = new Intl.DateTimeFormat('en-US-u-ca-islamic-umalqura', {day: 'numeric', month: 'long', year : 'numeric'});
+                document.getElementById('sys-hijri').innerText = hijriFormatter.format(now);
+            } catch(e) { document.getElementById('sys-hijri').innerText = "Islamic Date"; }
+        }
+        update();
+        setInterval(update, 10000); // Update every 10 seconds
     }
 
-    function renderList() {
-        const container = document.getElementById('para-list');
+    // --- Toast Notifications ---
+    function showToast(msg, type = "success") {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        
+        const icon = type === 'success' ? '✓' : 'ℹ';
+        toast.innerHTML = `<span class="t-icon">${icon}</span> <span>${msg}</span>`;
+        
+        container.appendChild(toast);
+        
+        setTimeout(() => {
+            toast.classList.add('fade-out');
+            setTimeout(() => toast.remove(), 400);
+        }, 3000);
+    }
+
+    // --- Tab Switching ---
+    function switchTab(tab) {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
+        
+        document.getElementById(`tab-${tab}`).classList.add('active');
+        document.getElementById(`view-${tab}`).classList.add('active');
+    }
+
+    // --- Paras Logic ---
+    function getTotalRukus(id) { return customCounts[id] || defaultParaData.find(p => p.id === id).rukus; }
+
+    function renderParas() {
+        const container = document.getElementById('view-paras');
         container.innerHTML = '';
 
         defaultParaData.forEach(para => {
@@ -483,43 +610,34 @@
             const validDone = doneList.filter(r => r <= total);
             const isComplete = validDone.length >= total && total > 0;
             const percent = total > 0 ? (validDone.length / total) * 100 : 0;
-            const isLastActive = lastActivePara == para.id;
 
             const card = document.createElement('div');
-            card.className = `para-card ${isComplete ? 'completed' : ''} ${isLastActive && !isComplete ? 'last-active' : ''}`;
-            card.onclick = () => openEditModal(para.id);
+            card.className = `list-card ${isComplete ? 'completed' : ''}`;
+            card.onclick = () => openParaModal(para.id);
 
             card.innerHTML = `
-                ${isLastActive && !isComplete ? '<div class="last-active-badge">Last Read</div>' : ''}
                 <div class="para-icon">${para.id}</div>
-                <div class="para-content">
-                    <div class="para-title">${para.name}</div>
-                    <div class="para-arabic">${para.ar}</div>
+                <div class="card-content">
+                    <div class="card-title">${para.name}</div>
+                    <div class="card-arabic">${para.ar}</div>
                 </div>
-                <div class="para-meta">
+                <div class="card-meta">
                     <span class="meta-text">${validDone.length} / ${total}</span>
-                    <div class="mini-bar">
-                        <div class="mini-fill" style="width: ${percent}%"></div>
-                    </div>
+                    <div class="mini-bar"><div class="mini-fill" style="width: ${percent}%"></div></div>
                 </div>
             `;
             container.appendChild(card);
         });
     }
 
-    // --- Modals ---
-    function openEditModal(id) {
+    function openParaModal(id) {
         currentParaId = id;
-        lastActivePara = id;
-        localStorage.setItem('qt_last_active', id);
-        
         const para = defaultParaData.find(p => p.id === id);
-        document.getElementById('modal-title').innerText = `Para ${para.id}`;
+        document.getElementById('modal-title').innerText = `Juz ${para.id}`;
         document.getElementById('modal-arabic').innerText = para.ar;
         document.getElementById('modal-total-count').innerText = getTotalRukus(id);
-        
         renderBubbles();
-        document.getElementById('edit-modal').classList.add('active');
+        openModal('edit-modal');
     }
 
     function renderBubbles() {
@@ -533,7 +651,10 @@
             const isDone = doneList.includes(i);
             btn.className = `ruku-bubble ${isDone ? 'checked' : ''}`;
             btn.innerText = i;
-            btn.onclick = () => toggleRuku(i);
+            btn.onclick = () => {
+                toggleRuku(i);
+                if(!isDone) showToast(`Ruku ${i} Marked`, "success");
+            };
             grid.appendChild(btn);
         }
     }
@@ -542,133 +663,190 @@
         if(!progressData[currentParaId]) progressData[currentParaId] = [];
         const list = progressData[currentParaId];
         
-        if(list.includes(idx)) {
-            const index = list.indexOf(idx);
-            list.splice(index, 1);
-        } else {
-            list.push(idx);
-        }
+        if(list.includes(idx)) list.splice(list.indexOf(idx), 1);
+        else list.push(idx);
         
-        saveData();
-        renderBubbles();
+        saveData(); renderBubbles();
     }
 
     function markAllRukus(status) {
         const total = getTotalRukus(currentParaId);
-        if(status) {
-            progressData[currentParaId] = Array.from({length: total}, (_, i) => i + 1);
-        } else {
-            progressData[currentParaId] = [];
-        }
-        saveData();
-        renderBubbles();
+        progressData[currentParaId] = status ? Array.from({length: total}, (_, i) => i + 1) : [];
+        saveData(); renderBubbles();
+        showToast(status ? "All Rukus Marked" : "Cleared All Rukus", status ? "success" : "error");
     }
 
     function adjustTotal(amount) {
         const current = getTotalRukus(currentParaId);
         const next = Math.max(1, Math.min(60, current + amount));
         customCounts[currentParaId] = next;
-        localStorage.setItem('qt_counts', JSON.stringify(customCounts));
-        
         document.getElementById('modal-total-count').innerText = next;
-        renderBubbles();
+        saveData(); renderBubbles();
     }
 
-    function closeEditModal(e) {
-        if(e && e.target !== document.getElementById('edit-modal')) return;
+    // --- Surahs Logic ---
+    function getAllSurahs() { return [...defaultSurahs, ...customSurahs]; }
+
+    function renderSurahs() {
+        const container = document.getElementById('surah-list');
+        container.innerHTML = '';
+        const allSurahs = getAllSurahs();
+
+        allSurahs.forEach(surah => {
+            const count = surahCounts[surah.id] || 0;
+            const card = document.createElement('div');
+            card.className = 'list-card';
+            card.onclick = () => openSurahModal(surah.id);
+            
+            card.innerHTML = `
+                <div class="para-icon" style="background: var(--primary-light); color: var(--primary-dark); font-size: 1.5rem;">
+                    ${count}
+                </div>
+                <div class="card-content">
+                    <div class="card-title">${surah.name}</div>
+                    <div class="card-subtitle">${surah.trans || 'Custom Entry'}</div>
+                </div>
+                <div class="card-meta">
+                    <div class="card-arabic">${surah.ar || ''}</div>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    function openSurahModal(id) {
+        currentSurahId = id;
+        const surah = getAllSurahs().find(s => s.id === id);
+        document.getElementById('s-modal-title').innerText = surah.name;
+        document.getElementById('s-modal-arabic').innerText = surah.ar || '';
+        document.getElementById('s-modal-count').innerText = surahCounts[id] || 0;
+        openModal('surah-modal');
+    }
+
+    function modifySurahCount(amount) {
+        let current = surahCounts[currentSurahId] || 0;
+        current += amount;
+        if(current < 0) current = 0;
         
-        // Check for celebration
-        const total = getTotalRukus(currentParaId);
-        const done = (progressData[currentParaId] || []).length;
-        if(done >= total && total > 0) popConfetti();
-
-        document.getElementById('edit-modal').classList.remove('active');
-        renderList();
+        surahCounts[currentSurahId] = current;
+        document.getElementById('s-modal-count').innerText = current;
+        
+        saveData();
+        renderSurahs();
         updateDashboard();
+        
+        if(amount > 0) {
+            showToast(`+1 Added to ${document.getElementById('s-modal-title').innerText}`, "success");
+            if(current % 5 === 0 && current > 0) popConfetti();
+        }
     }
 
-    // --- Dashboard & Stats ---
+    function saveCustomSurah() {
+        const name = document.getElementById('new-surah-name').value.trim();
+        const ar = document.getElementById('new-surah-ar').value.trim();
+        const trans = document.getElementById('new-surah-trans').value.trim();
+
+        if(!name) { showToast("Name is required!", "error"); return; }
+
+        const newSurah = {
+            id: 'c_' + Date.now(),
+            name: name, ar: ar, trans: trans
+        };
+
+        customSurahs.push(newSurah);
+        localStorage.setItem('qtp_custom_surahs', JSON.stringify(customSurahs));
+        
+        document.getElementById('new-surah-name').value = '';
+        document.getElementById('new-surah-ar').value = '';
+        document.getElementById('new-surah-trans').value = '';
+        
+        closeModal('add-surah-modal');
+        showToast("Tracking Added Successfully", "success");
+        renderSurahs();
+    }
+
+
+    // --- Core Architecture ---
+    function openModal(id) { document.getElementById(id).classList.add('active'); }
+    
+    function closeModal(id, checkParaCompletion = false) { 
+        document.getElementById(id).classList.remove('active'); 
+        
+        if(checkParaCompletion && currentParaId) {
+            const t = getTotalRukus(currentParaId);
+            const d = (progressData[currentParaId] || []).length;
+            if(d >= t && t > 0) popConfetti();
+            renderParas();
+            updateDashboard();
+            showToast("Progress Saved");
+        }
+    }
+
     function updateDashboard() {
-        let totalParas = 0;
-        let totalRukus = 0;
-        let readRukus = 0;
-        let completeParas = 0;
+        let totalRukus = 0, readRukus = 0, completeParas = 0;
 
         defaultParaData.forEach(p => {
             const t = getTotalRukus(p.id);
             const d = (progressData[p.id] || []).filter(r => r <= t).length;
-            totalParas++;
-            totalRukus += t;
-            readRukus += d;
+            totalRukus += t; readRukus += d;
             if(d >= t && t > 0) completeParas++;
         });
 
+        let totalSurahsRead = Object.values(surahCounts).reduce((a, b) => a + b, 0);
+
         const percent = totalRukus > 0 ? Math.round((readRukus / totalRukus) * 100) : 0;
-        const offset = 157 - (157 * percent) / 100;
+        const offset = 188 - (188 * percent) / 100; // 188 is circumference (2 * pi * 30)
 
         document.getElementById('dash-paras').innerText = completeParas;
         document.getElementById('dash-percent').innerText = `${percent}%`;
         document.getElementById('progress-circle').style.strokeDashoffset = offset;
         document.getElementById('dash-ruku-left').innerText = totalRukus - readRukus;
-        document.getElementById('dash-ruku-done').innerText = readRukus;
+        document.getElementById('dash-surah-total').innerText = totalSurahsRead;
     }
 
     function saveData() {
-        localStorage.setItem('qt_progress', JSON.stringify(progressData));
+        localStorage.setItem('qtp_progress', JSON.stringify(progressData));
+        localStorage.setItem('qtp_counts', JSON.stringify(customCounts));
+        localStorage.setItem('qtp_surahs', JSON.stringify(surahCounts));
     }
 
-    // --- Settings & Utils ---
-    function openSettings() {
-        document.getElementById('settings-modal').classList.add('active');
-    }
-
-    function closeSettingsModal(e) {
-        if(e && e.target !== document.getElementById('settings-modal')) return;
-        document.getElementById('settings-modal').classList.remove('active');
-    }
-
+    // --- Settings / Theme ---
     function toggleTheme() {
         const body = document.body;
-        const current = body.getAttribute('data-theme');
-        const next = current === 'dark' ? 'light' : 'dark';
+        const next = body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
         body.setAttribute('data-theme', next);
-        localStorage.setItem('qt_theme', next);
+        localStorage.setItem('qtp_theme', next);
         document.getElementById('theme-icon').innerText = next === 'dark' ? '☀️' : '🌙';
     }
 
     function applyTheme() {
-        const theme = localStorage.getItem('qt_theme') || 'light';
+        const theme = localStorage.getItem('qtp_theme') || 'light';
         document.body.setAttribute('data-theme', theme);
         document.getElementById('theme-icon').innerText = theme === 'dark' ? '☀️' : '🌙';
     }
 
     function resetAll() {
-        if(confirm('Are you sure? This will delete all progress.')) {
-            localStorage.removeItem('qt_progress');
-            localStorage.removeItem('qt_counts');
-            localStorage.removeItem('qt_last_active');
+        if(confirm('🚨 This will delete ALL progress, custom surahs, and settings. Continue?')) {
+            localStorage.clear();
             location.reload();
         }
     }
 
     function exportData() {
         const data = {
-            progress: progressData,
-            counts: customCounts,
-            lastActive: lastActivePara,
+            progress: progressData, counts: customCounts,
+            surahs: surahCounts, customSurahs: customSurahs,
             theme: document.body.getAttribute('data-theme')
         };
         const blob = new Blob([JSON.stringify(data)], {type: 'application/json'});
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
-        a.href = url;
-        a.download = `quran_tracker_backup_${new Date().toISOString().slice(0,10)}.json`;
+        a.href = url; a.download = `QuranPro_Backup_${new Date().toISOString().slice(0,10)}.json`;
         a.click();
+        showToast("Backup Downloaded", "success");
     }
 
-    function triggerImport() {
-        document.getElementById('import-file').click();
-    }
+    function triggerImport() { document.getElementById('import-file').click(); }
 
     function importData(input) {
         const file = input.files[0];
@@ -677,63 +855,57 @@
         reader.onload = function(e) {
             try {
                 const data = JSON.parse(e.target.result);
-                if(data.progress) localStorage.setItem('qt_progress', JSON.stringify(data.progress));
-                if(data.counts) localStorage.setItem('qt_counts', JSON.stringify(data.counts));
-                if(data.lastActive) localStorage.setItem('qt_last_active', data.lastActive);
-                if(data.theme) localStorage.setItem('qt_theme', data.theme);
+                if(data.progress) localStorage.setItem('qtp_progress', JSON.stringify(data.progress));
+                if(data.counts) localStorage.setItem('qtp_counts', JSON.stringify(data.counts));
+                if(data.surahs) localStorage.setItem('qtp_surahs', JSON.stringify(data.surahs));
+                if(data.customSurahs) localStorage.setItem('qtp_custom_surahs', JSON.stringify(data.customSurahs));
+                if(data.theme) localStorage.setItem('qtp_theme', data.theme);
                 location.reload();
-            } catch(err) {
-                alert('Invalid file format');
-            }
+            } catch(err) { showToast("Invalid backup file", "error"); }
         };
         reader.readAsText(file);
     }
 
-    // --- Confetti Effect (Simple) ---
+    // --- Premium Confetti ---
     function popConfetti() {
         const canvas = document.getElementById('confetti');
         const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
         
         const pieces = [];
-        const colors = ['#fcd34d', '#34d399', '#60a5fa', '#f87171'];
+        const colors = ['#fcd34d', '#34d399', '#60a5fa', '#f87171', '#a78bfa'];
         
-        for(let i=0; i<100; i++) {
+        for(let i=0; i<150; i++) {
             pieces.push({
-                x: canvas.width/2, y: canvas.height/2,
-                vx: (Math.random() - 0.5) * 10,
-                vy: (Math.random() - 0.5) * 10 - 5,
+                x: canvas.width/2, y: canvas.height/2 + 100,
+                vx: (Math.random() - 0.5) * 20, vy: (Math.random() - 0.5) * 20 - 10,
                 color: colors[Math.floor(Math.random()*colors.length)],
-                size: Math.random() * 8 + 4
+                size: Math.random() * 12 + 6, rot: Math.random() * 360, rotSpeed: (Math.random() - 0.5) * 10
             });
         }
 
+        
         let frame = 0;
         function animate() {
             ctx.clearRect(0,0, canvas.width, canvas.height);
             let active = false;
             pieces.forEach(p => {
-                p.x += p.vx;
-                p.y += p.vy;
-                p.vy += 0.2; // gravity
-                p.size *= 0.96; // shrink
-                ctx.fillStyle = p.color;
-                ctx.fillRect(p.x, p.y, p.size, p.size);
+                p.x += p.vx; p.y += p.vy; p.vy += 0.3; // gravity
+                p.size *= 0.98; p.rot += p.rotSpeed;
+                
+                ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot * Math.PI / 180);
+                ctx.fillStyle = p.color; ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size);
+                ctx.restore();
                 if(p.size > 0.5) active = true;
             });
             
-            if(active && frame < 100) {
-                frame++;
-                requestAnimationFrame(animate);
-            } else {
-                ctx.clearRect(0,0, canvas.width, canvas.height);
-            }
+            if(active && frame < 150) { frame++; requestAnimationFrame(animate); } 
+            else { ctx.clearRect(0,0, canvas.width, canvas.height); }
         }
         animate();
     }
 
-    // Start
+    // Start App
     init();
 
 </script>
